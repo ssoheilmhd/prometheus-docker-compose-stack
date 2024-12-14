@@ -1,8 +1,8 @@
-# create prometheus-grafana stack for monitoring
+# Create prometheus-grafana stack for monitoring
 *This project is created to monitor services in prometheus and grafana stack.*
 
 ## Requirement:
-*It is highly recommended to create a separeted partition for /var/lib/docker for better storage management.*
+*If you didn't seperate dockervol when you installed OS, it is highly recommended to create a separeted partition for /var/lib/docker to have better storage management.*
 *If we assume that the name of the disk assigned to this partition is sdb, we will proceed as follows:*
 ```
 pvcreate /dev/sdb
