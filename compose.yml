@@ -1,0 +1,124 @@
+networks:
+  app_net:
+    external: false
+    name: app_net
+  web_net:
+    external: true
+    name: web_net
+
+volumes:
+  grafana_data:
+    name: grafana_data
+  prometheus_data:
+    name: prometheus_data
+  alertmanager_data:
+    name: alertmanager_data
+  pushgateway_data:
+    name: pushgateway_data
+
+services:
+  prometheus:
+    image: prom/prometheus:v3.0.1
+    restart: ${RESTART_POLICY}
+    container_name: prometheus
+    volumes:
+      - prometheus_data:/prometheus
+      - ./prometheus:/etc/prometheus
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.path=/prometheus
+      - --storage.tsdb.retention.time=30d
+      - --storage.tsdb.retention.size=150GB
+      - --web.enable-lifecycle
+    networks:
+      - web_net
+      - app_net
+    ports:
+      - "9090:9090"
+
+  grafana:
+    image: grafana/grafana:10.1.5
+    restart: ${RESTART_POLICY}
+    container_name: grafana
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/:/etc/grafana/provisioning/
+    environment:
+      - GF_SECURITY_ADMIN_USER=${GRAFANA_USERNAME}
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD}
+      - GF_PATHS_PROVISIONING=/etc/grafana/provisioning
+      - GF_PATHS_DATA=/var/lib/grafana
+        #- GF_INSTALL_PLUGINS=${GRAFANA_INSTALL_PLUGINS}
+        #      - http_proxy=http://<your-IP-address>:<portNum>
+        #      - https_proxy=http://<your-IP-address>:<portNum>
+    networks:
+      - web_net
+      - app_net
+    ports:
+      - "3000:3000"
+
+  alertmanager:
+    image: prom/alertmanager:v0.27.0
+    restart: ${RESTART_POLICY}
+    container_name: alertmanager
+    volumes:
+      - alertmanager_data:/alertmanager
+      - ./alertmanager:/etc/alertmanager
+    command:
+      - --config.file=/etc/alertmanager/alertmanager.yml
+      - --storage.path=/alertmanager
+    networks:
+      - web_net
+      - app_net
+    ports:
+      - "9093:9093"
+
+  pushgateway:
+    image: prom/pushgateway:v1.10.0
+    restart: ${RESTART_POLICY}
+    container_name: pushgateway
+    command:
+      - --persistence.file=/tmp/pushgateway.store
+      - --persistence.interval=1m
+    volumes:
+      - pushgateway_data:/tmp/
+    networks:
+      - web_net
+      - app_net
+    ports:
+      - "9091:9091"
+
+  node-exporter:
+    image: prom/node-exporter:v1.8.2
+    restart: ${RESTART_POLICY}
+    hostname: '${HOSTNAME}'
+    container_name: node-exporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    networks:
+      - app_net
+
+
+  vmware_exporter:
+    image: pryorda/vmware_exporter:v0.18.4
+    restart: ${RESTART_POLICY}
+    container_name: vmware_exporter
+    environment:
+      - VSPHERE_HOST="172.28.178.66"
+      - VSPHERE_USER="root"
+      - VSPHERE_PASSWORD=""
+      - VSPHERE_IGNORE_SSL="True"
+      - VSPHERE_COLLECT_VMS="False"
+      - VSPHERE_SPECS_SIZE=2000
+    networks:
+      - web_net
+      - app_net
+    ports:
+      - "9272:9272"
