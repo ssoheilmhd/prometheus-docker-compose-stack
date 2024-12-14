@@ -1,0 +1,17 @@
+[Unit]
+Description=Prometheus Service
+After=syslog.target local-fs.target network.target
+
+[Service]
+Type=simple
+User=root
+LimitNOFILE=4096
+WorkingDirectory=/root/prometheus
+ExecStart=/usr/bin/docker compose up -d
+Restart=on-failure
+RestartSec=50s
+StandardOutput=syslog
+StandardError=syslog
+
+[Install]
+WantedBy=multi-user.target
