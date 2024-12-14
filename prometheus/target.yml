@@ -1,0 +1,4 @@
+- targets:
+  - <node exporter target IP>:<port number>
+  labels:
+    job: <job name>
