@@ -8,6 +8,14 @@
 pvcreate /dev/sdb
 vgcreate dockerSpaceVG /dev/sdb
 lvcreate -n dockervol -l 100%FREE dockerSpaceVG
+mkdir /tmp/docker && mv /var/lib/docker/* /tmp/docker/
+mkfs -t ext4 /dev/mapper/dockerSpaceVG-dockervol
+mount /dev/mapper/dockerSpaceVG-dockervol /var/lib/docker
+mv /tmp/docker/* /var/lib/docker
+```
+*after this operation you Need to configure fstab file to mount docker vol after reboot:*
+```
+echo "ev/mapper/dockerSpaceVG-dockervol /var/lib/docker/ ext4 defaults 0 1" >> /etc/fstab
 ```
 
 ```
