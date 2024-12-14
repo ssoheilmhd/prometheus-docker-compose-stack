@@ -2,6 +2,8 @@
 
 *This project is created to monitor services in prometheus and grafana stack.*
 
+## Requirement
+
 **It is highly recommended to create a separeted partition for /var/lib/docker for better storage management.**
 ```
 docker compose up -d
