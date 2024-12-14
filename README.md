@@ -18,11 +18,13 @@ mv /tmp/docker/* /var/lib/docker
 echo "dev/mapper/dockerSpaceVG-dockervol /var/lib/docker/ ext4 defaults 0 1" >> /etc/fstab
 ```
 ## Installation:
-*If you wish to run the prometheus TSDB with grafana dashboards, You can easily run compose.yml with this command:*
+*If you wish to run the prometheus TSDB with grafana dashboards, You can easily set suitable variables in .env files and run compose.yml with this command:*
 ```
 docker compose up -d
 ```
 
+## Notices
 
-
-*it is important to know that in prometheus configuration (prometheus.yml) the job name of node discovery has been created for file service discovery. You can use targets.yml to find new nodes from prometheus!*
+*1- It is important to know that in prometheus configuration (prometheus.yml) the job name of node discovery has been created for file service discovery. You can use targets.yml to find new nodes from prometheus!*
+*2- Grafana provisioning is enabled in this project under grafana directory. If you like to transport your machine to another machine you can easily copy grafana contents and it will learn your prometheus and its dashboard from this path.*
+*3- If you wish you add a new grafana dashboard, you can add it into dashboards (similar to NodeExporterFull.json) folder and it will be learned by grafana.*
