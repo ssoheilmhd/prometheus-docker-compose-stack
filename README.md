@@ -20,7 +20,10 @@ echo "dev/mapper/dockerSpaceVG-dockervol /var/lib/docker/ ext4 defaults 0 1" >> 
 ## Installation:
 *If you wish to run the prometheus TSDB with grafana dashboards, You can easily set suitable variables in .env files and run compose.yml with this command:*
 ```
-docker compose up -d
+cp prometheus.service /lib/systemd/system/
+systemctl daemon-reload
+systemctl enable prometheus
+systemctl start prometheus
 ```
 
 ## Notices
