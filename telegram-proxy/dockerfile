@@ -1,0 +1,5 @@
+FROM python:3.12-slim
+WORKDIR /app
+COPY telegram_proxy.py .
+RUN export http_proxy=<proxy_IP:proxy_port> && https_proxy=<proxy_IP:proxy_port> && pip install flask requests dotenv
+CMD ["python", "telegram_proxy.py"]

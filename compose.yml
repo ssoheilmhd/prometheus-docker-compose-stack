@@ -5,6 +5,9 @@ networks:
   web_net:
     external: true
     name: web_net
+  tlg_proxy_net:
+    external: true
+    name: tlg_proxy_net
 
 volumes:
   grafana_data:
@@ -70,8 +73,22 @@ services:
     networks:
       - web_net
       - app_net
+      - tlg_proxy_net
+
     ports:
       - "9093:9093"
+      
+  telegramproxy:
+    image: telegram-proxy:v1.0.0
+    container_name: telegram_proxy
+    env_file:
+      - telegram-proxy/.env
+    networks:
+      - tlg_proxy_net
+    ports:
+      - "8080:8080"
+    depends_on:
+      - alertmanager
 
   pushgateway:
     image: prom/pushgateway:v1.10.0
