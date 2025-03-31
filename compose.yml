@@ -87,6 +87,8 @@ services:
       - tlg_proxy_net
     ports:
       - "8080:8080"
+    depends_on:
+      - alertmanager
 
   pushgateway:
     image: prom/pushgateway:v1.10.0
