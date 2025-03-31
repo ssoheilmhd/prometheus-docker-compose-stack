@@ -33,4 +33,4 @@ I assume that we don't have any internet access through the host, so my telegram
 *1- It is important to know that in prometheus configuration (prometheus.yml) the job name of node discovery has been created for file service discovery. You can use targets.yml to find new nodes from prometheus!*
 *2- Grafana provisioning is enabled in this project under grafana directory. If you like to transport your machine to another machine you can easily copy grafana contents and it will learn your prometheus and its dashboard from this path.*
 *3- If you wish you add a new grafana dashboard, you can add it into dashboards (similar to NodeExporterFull.json) folder and it will be learned by grafana.*
-
+*4- Note that port 8080 on the Telegram proxy container is currently open to the public and this could pose a security risk. To prevent this issue, you need to configure the host's firewall properly.*
