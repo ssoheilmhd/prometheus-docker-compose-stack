@@ -1,5 +1,5 @@
 # Create prometheus-grafana stack for monitoring
-*This project is created to monitor services in prometheus and grafana stack.*
+*This project is created to monitor services in prometheus and grafana stack with dockercompose.*
 
 ## Requirement:
 *If you didn't seperate dockervol when you installed OS, it is highly recommended to create a separeted partition for /var/lib/docker to have better storage management.*
@@ -25,9 +25,12 @@ systemctl daemon-reload
 systemctl enable prometheus
 systemctl start prometheus
 ```
+## Telegram Proxy
+I assume that we don't have any internet access through the host, so my telegram proxy component uses an http proxy from the internal network that has free internet access.
 
 ## Notices
 
 *1- It is important to know that in prometheus configuration (prometheus.yml) the job name of node discovery has been created for file service discovery. You can use targets.yml to find new nodes from prometheus!*
 *2- Grafana provisioning is enabled in this project under grafana directory. If you like to transport your machine to another machine you can easily copy grafana contents and it will learn your prometheus and its dashboard from this path.*
 *3- If you wish you add a new grafana dashboard, you can add it into dashboards (similar to NodeExporterFull.json) folder and it will be learned by grafana.*
+
