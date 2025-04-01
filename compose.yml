@@ -76,7 +76,7 @@ services:
       - tlg_proxy_net
 
     ports:
-      - "9093:9093"
+      - "127.0.0.1:9093:9093"
       
   telegramproxy:
     image: telegram-proxy:v1.0.0
