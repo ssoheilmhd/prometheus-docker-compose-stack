@@ -1,5 +1,5 @@
 # Create prometheus-grafana stack for monitoring
-*This project is created to monitor services in prometheus and grafana stack with dockercompose.*
+*This project has been created to monitor services with Prometheus and visualize them in Grafana. We will use a Telegram proxy for improved alert management. All of these containers will run using the Docker Compose file.*
 
 ## Requirement:
 *If you didn't seperate dockervol when you installed OS, it is highly recommended to create a separeted partition for /var/lib/docker to have better storage management.*
