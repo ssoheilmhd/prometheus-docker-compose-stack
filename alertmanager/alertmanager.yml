@@ -11,6 +11,6 @@ route:
 receivers:
 - name: 'telegram'
   webhook_configs:
-  - url: 'http://172.27.63.60:8080/forward'  # Local proxy service
+  - url: 'http://<host_IP>:8080/forward'  # Local proxy service
     send_resolved: true
     max_alerts: 10  # Prevent message flooding
