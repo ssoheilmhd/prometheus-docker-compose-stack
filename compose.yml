@@ -23,7 +23,7 @@ volumes:
 
 services:
   prometheus:
-    image: jfrog.hpds.ir/docker/prom/prometheus:v3.0.1
+    image: prom/prometheus:v3.0.1
     restart: ${RESTART_POLICY}
     container_name: prometheus
     volumes:
@@ -93,7 +93,7 @@ services:
       - alertmanager
 
   pushgateway:
-    image: jfrog.hpds.ir/docker/prom/pushgateway:v1.10.0
+    image: prom/pushgateway:v1.10.0
     restart: ${RESTART_POLICY}
     container_name: pushgateway
     command:
@@ -108,7 +108,7 @@ services:
       - "9091:9091"
 
   node-exporter:
-    image: jfrog.hpds.ir/docker/prom/node-exporter:v1.8.2
+    image: prom/node-exporter:v1.8.2
     restart: ${RESTART_POLICY}
     hostname: '${HOSTNAME}'
     container_name: node-exporter
@@ -126,7 +126,7 @@ services:
 
 
   vmware_exporter:
-    image: jfrog.hpds.ir/docker/pryorda/vmware_exporter:v0.18.4
+    image: pryorda/vmware_exporter:v0.18.4
     restart: ${RESTART_POLICY}
     container_name: vmware_exporter
     environment:
@@ -144,7 +144,7 @@ services:
 
 
   loki:
-    image: jfrog.hpds.ir/docker/grafana/loki:k171-b5eaae1
+    image: grafana/loki:k171-b5eaae1
     command: -config.file=/etc/loki/loki.yml
     restart: ${RESTART_POLICY}
     container_name: loki
@@ -157,7 +157,7 @@ services:
       - app_net
 
   promtail:
-    image: jfrog.hpds.ir/docker/grafana/promtail:k171-b5eaae1
+    image: grafana/promtail:k171-b5eaae1
     restart: ${RESTART_POLICY}
     container_name: promtail
     volumes:
