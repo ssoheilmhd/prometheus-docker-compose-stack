@@ -1,0 +1,34 @@
+
+groups:
+- name: vm-resource-alerts
+  rules:
+
+  #CPU Alert
+  - alert: HostHighCpuLoad
+    expr: (avg by (instance) (rate(node_cpu_seconds_total{mode!="idle"}[2m]))) > .80
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: ( {{ $labels.job }} {{ $labels.instance }} ) Host high CPU load. it's been used more than 80%
+      description: "CPU load is > 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  # RAM Alert
+  - alert: HostOutOfMemory
+    expr: (node_memory_MemAvailable_bytes / node_memory_MemTotal_bytes < .10)
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: ( {{ $labels.job }} {{ $labels.instance }} ) Host out of memory.  It's been used more than 90%
+      description: "Node memory is filling up (< 10% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  # Disk Alert
+  - alert: HostOutOfDiskSpace
+    expr: (node_filesystem_avail_bytes{fstype!~"^(fuse.*|tmpfs|cifs|nfs)"} / node_filesystem_size_bytes < .20 and on (instance, device, mountpoint) node_filesystem_readonly == 0)
+    for: 2m
+    labels:
+      severity: critical
+    annotations:
+      summary: ( {{ $labels.job }} {{ $labels.instance }} ) Host out of disk space. It's been used more than 80%
+      description: "Disk is almost full (< 20% left)\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
