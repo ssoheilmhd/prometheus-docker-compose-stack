@@ -1,0 +1,16 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  group_by: ['alertname', 'instance']
+  group_wait: 30s
+  group_interval: 1m
+  repeat_interval: 12h
+  receiver: 'telegram'
+
+receivers:
+- name: 'telegram'
+  webhook_configs:
+  - url: 'http://172.27.63.60:8080/forward'  # Local proxy service
+    send_resolved: true
+    max_alerts: 10  # Prevent message flooding
